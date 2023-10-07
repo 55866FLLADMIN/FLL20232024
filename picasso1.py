@@ -13,6 +13,7 @@ def init():
     sound.volume(100)
     moveSpeed = 1000
     inch2Degree = 26
+    tail = motor
 
 
 
@@ -57,7 +58,8 @@ async def moveBackward(distance):
 
 async def turnLeft(degrees):
     '''
-    degrees: ??
+    purpose: Turn robot left
+    degrees: 1 to 360 in increments of 1
     '''
     if degrees is None:
         return
@@ -88,7 +90,8 @@ async def turnLeft(degrees):
 
 async def turnRight(degrees):
     '''
-    degrees: 1 to 360 in increments of 10
+    purpose: turn robot right
+    degrees: 1 to 360 in increments of 1
     '''
     if degrees is None:
         return
@@ -108,22 +111,79 @@ async def turnRight(degrees):
     #RIGHT
     #motor_pair.move_tank_for_degrees(motor_pair.PAIR_1, -148, -200, 200)
 
+async def armUp():
+    '''
+    Purpose:Lift up Arm
+    degrees: 1 to 360
+    speed: 100 to 1000
+    '''
+    print ('arm up')
+    await motor.run_for_degrees(port.B, 360, 720)
+
+async def armDown():
+    '''
+    Purpose:Lift up Arm
+    degrees: 1 to 360
+    speed: 100 to 1000
+    '''
+    print ('arm down')
+    await motor.run_for_degrees(port.B, -360, 1000, acceleration=10000)
+
+
+async def tailUp():
+    '''
+    Purpose:Lift up Arm
+    degrees: 1 to 360
+    speed: 100 to 1000
+    '''
+    print ('tail up')
+    await motor.run_for_degrees(port.E, 360, 720)
+
+    
+
+
+async def tailDown():
+    '''
+    Purpose:Lift up Arm
+    degrees: 1 to 360
+    speed: 100 to 1000
+    '''
+    print ('tail Down')
+    await motor.run_for_degrees(port.E, -360, 720)
+
 
 async def main():
     # write your code here
     init()
 
-    await moveForward(12)
-    await moveBackward(5)
+
+    motor_pair.move_tank_for_degrees(motor_pair.PAIR_1, -500, 1000, 1000)
+    motor_pair.move_tank_for_degrees(motor_pair.PAIR_1, 500, 1000, 1000)
+    #await moveForward(12)
+    #await moveBackward(5)
     #await turnRight(180)
     #await turnLeft(180)
-    await turnLeft(90)
+    #await turnLeft(90)
 
-    await motor.run_for_degrees(port.B, 360, 720)
-    await motor.run_for_degrees(port.E, 360, 720)
-    await motor.run_for_degrees(port.B, -360, 720)
-    await motor.run_for_degrees(port.E, -360, 720)
 
+    ##Robot initial position
+    await armUp()
+    #await armDown()
+    await tailUp()
+    #await tailDown()
+
+    #mission_3dCinema
+    await moveForward(16)
+    await armDown()
+    await armUp()
+    await armDown()
+    await armUp()
+    await moveBackward(5)
+    await turnRight(45)
+    #await motor.run_for_degrees(port.B, 360, 720)
+    #await motor.run_for_degrees(port.E, 360, 720)
+    #await motor.run_for_degrees(port.B, -360, 720)
+    #await motor.run_for_degrees(port.E, -360, 720)
 
 
 runloop.run(main())
