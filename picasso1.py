@@ -1,5 +1,5 @@
 from hub import light_matrix, motion_sensor, port, sound
-import motor,motor_pair, runloop
+import motor,motor_pair, runloop, math
 from motor import BRAKE, HOLD
 from motor_pair import move_tank, move_tank_for_degrees, stop
 
@@ -73,7 +73,9 @@ async def turnLeft(degrees):
     1 degree turn = 0.61 degrees wheel turn. 
     '''
     #LEFT
-    turnDegrees = degrees * 0.6081
+    await light_matrix.write("L")
+    turnDegrees = degrees * 1.6444
+    turnDegrees = math.ceil(turnDegrees)
     await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1, turnDegrees, -200, 200)
     #await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1, 296, -200, 200)
 
@@ -96,11 +98,12 @@ async def turnRight(degrees):
     90= 148
     45= 74
     '''
-    turnDegrees = degrees * -0.681
+    await light_matrix.write("R")
+    turnDegrees = degrees * 1.6444
     print (turnDegrees)
-    turnDegrees = int(turnDegrees)
+    turnDegrees = math.ceil(turnDegrees) *-1
     print (turnDegrees)
-    await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1, turnDegrees, -200, 200)
+    await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1, turnDegrees, -200, 200)   
 
     #RIGHT
     #motor_pair.move_tank_for_degrees(motor_pair.PAIR_1, -148, -200, 200)
@@ -109,14 +112,18 @@ async def turnRight(degrees):
 async def main():
     # write your code here
     init()
+
     await moveForward(12)
-    #motor_pair.stop(motor_pair.PAIR_1)
-    # await moveForward(14)
-    #await turnLeft(90)
     await moveBackward(5)
-    await turnRight(180)
-    await turnLeft(180)
-    #await moveForward(7)
-    #await turnRight(90)
+    #await turnRight(180)
+    #await turnLeft(180)
+    await turnLeft(90)
+
+    await motor.run_for_degrees(port.B, 360, 720)
+    await motor.run_for_degrees(port.E, 360, 720)
+    await motor.run_for_degrees(port.B, -360, 720)
+    await motor.run_for_degrees(port.E, -360, 720)
+
+
 
 runloop.run(main())
