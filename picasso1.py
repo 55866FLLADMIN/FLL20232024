@@ -34,7 +34,7 @@ async def moveForward(distance):
     light_matrix.write("F")
     degrees = distance * 26
     #await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1, 360, 500, 500)
-    await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1, degrees, 1000, 1000)
+    await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1, degrees, 700, 700)
     motor_pair.stop(motor_pair.PAIR_1)
     #await motor_pair.move_for_time(motor_pair.PAIR_1,5000,0,velocity=1000,acceleration=500)
     #motor_pair.move_tank(motor_pair.PAIR_1, 100, 100)
@@ -52,7 +52,7 @@ async def moveBackward(distance):
     await light_matrix.write("B")
     degrees = -distance * 26
     #await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1, 360, 500, 500)
-    await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1, degrees, 1000, 1000)
+    await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1, degrees, 700, 700)
     motor_pair.stop(motor_pair.PAIR_1)
     sound.beep()
 
@@ -79,6 +79,7 @@ async def turnLeft(degrees):
     turnDegrees = degrees * 1.6444
     turnDegrees = math.ceil(turnDegrees)
     await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1, turnDegrees, -200, 200)
+    sound.beep()
     #await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1, 296, -200, 200)
 
     #if direction == "LEFT":
@@ -160,13 +161,16 @@ MISSIONS START
 async def Mission_3DCinema():
     await armUp()
     await tailUp()
-    await moveForward(16)
+    await moveForward(15)
+    await turnLeft(6)
     await armDown()
+    await turnRight(8)
     await armUp()
+    await turnLeft(8)
     await armDown()
+    await turnRight(8)
     await armUp()
-    await moveBackward(5)
-    await turnRight(45)
+
 
 #Mission 02
 async def Mission_TheaterSceneChange():
@@ -188,30 +192,37 @@ async def mission_5():
     await armUp()
     await tailUp()
 
-#Mission 0
+#Mission 06
 async def mission_6():
     await armUp()
     await tailUp()
 
-#Mission 0
+#Mission 07
 async def mission_7():
     await armUp()
     await tailUp()
 
-#Mission 0
+#Mission 08
 async def mission_8():
     await armUp()
     await tailUp()
 
-#Mission 0
+#Mission 09
 async def mission_9():
     await armUp()
     await tailUp()
 
-#Mission 0
-async def mission_10():
+#Mission 10
+async def mission_SoundMixer():
     await armUp()
-    await tailUp()
+    await tailUp()moveBackward
+    await moveBackward(3)
+    await sound.beep()
+    await turnRight(60)
+    await moveForward(14)
+    await turnLeft(40)
+    await moveForward(4)
+    await armUp()
 
 '''
 MISSIONS END
@@ -220,7 +231,9 @@ MISSIONS END
 async def main():
     # write your code here
     init()
-    await Mission01_3DCinema()
+    #await turnRight(90)
+    await Mission_3DCinema()
+    await mission_SoundMixer()
     #motor_pair.move_tank_for_degrees(motor_pair.PAIR_1, -500, 1000, 1000)
     #motor_pair.move_tank_for_degrees(motor_pair.PAIR_1, 500, 1000, 1000)
     #await moveForward(12)
