@@ -5,15 +5,15 @@ from motor_pair import move_tank, move_tank_for_degrees, stop
 
 
 def init():
-    ##  Initialize motors and sensors
+    ##Initialize motors and sensors
     motor_pair.unpair(motor_pair.PAIR_1)
     motor_pair.pair(motor_pair.PAIR_1,port.D,port.F)
     motion_sensor.set_yaw_face(motion_sensor.FRONT)
     motion_sensor.reset_yaw(0)
     sound.volume(100)
-    moveSpeed = 1000
-    inch2Degree = 26
-    tail = motor
+    #moveSpeed = 1000
+    #inch2Degree = 26
+    #tail = motor
 
 
 
@@ -27,9 +27,9 @@ async def moveForward(distance):
 
     '''
     inch= degree
-    14  =   360 
-    7   =   180
-    1   =   26
+    14=360
+    7=180
+    1=26
     '''
     light_matrix.write("F")
     degrees = distance * 26
@@ -38,8 +38,8 @@ async def moveForward(distance):
     motor_pair.stop(motor_pair.PAIR_1)
     #await motor_pair.move_for_time(motor_pair.PAIR_1,5000,0,velocity=1000,acceleration=500)
     #motor_pair.move_tank(motor_pair.PAIR_1, 100, 100)
-    
-    
+
+
     #await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1, -360, 500, 500)
     #await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1, -180, 500, 500)
     sound.beep()
@@ -72,7 +72,7 @@ async def turnLeft(degrees):
     180 = 296
     90= 148
     45= 74
-    1 degree turn = 0.61 degrees wheel turn. 
+    1 degree turn = 0.61 degrees wheel turn.
     '''
     #LEFT
     await light_matrix.write("L")
@@ -106,7 +106,7 @@ async def turnRight(degrees):
     print (turnDegrees)
     turnDegrees = math.ceil(turnDegrees) *-1
     print (turnDegrees)
-    await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1, turnDegrees, -200, 200)   
+    await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1, turnDegrees, -200, 200)
 
     #RIGHT
     #motor_pair.move_tank_for_degrees(motor_pair.PAIR_1, -148, -200, 200)
@@ -139,7 +139,7 @@ async def tailUp():
     print ('tail up')
     await motor.run_for_degrees(port.E, 360, 720)
 
-    
+
 
 
 async def tailDown():
@@ -152,13 +152,77 @@ async def tailDown():
     await motor.run_for_degrees(port.E, -360, 720)
 
 
+
+'''
+MISSIONS START
+'''
+#Mission 01
+async def Mission_3DCinema():
+    await armUp()
+    await tailUp()
+    await moveForward(16)
+    await armDown()
+    await armUp()
+    await armDown()
+    await armUp()
+    await moveBackward(5)
+    await turnRight(45)
+
+#Mission 02
+async def Mission_TheaterSceneChange():
+    await armUp()
+    await tailUp()
+
+#Mission 03
+async def mission_ImmersiveExperience():
+    await armUp()
+    await tailUp()
+
+#Mission 04
+async def mission_MasterPiece():
+    await armUp()
+    await tailUp()
+
+#Mission 05
+async def mission_5():
+    await armUp()
+    await tailUp()
+
+#Mission 0
+async def mission_6():
+    await armUp()
+    await tailUp()
+
+#Mission 0
+async def mission_7():
+    await armUp()
+    await tailUp()
+
+#Mission 0
+async def mission_8():
+    await armUp()
+    await tailUp()
+
+#Mission 0
+async def mission_9():
+    await armUp()
+    await tailUp()
+
+#Mission 0
+async def mission_10():
+    await armUp()
+    await tailUp()
+
+'''
+MISSIONS END
+'''
+
 async def main():
     # write your code here
     init()
-
-
-    motor_pair.move_tank_for_degrees(motor_pair.PAIR_1, -500, 1000, 1000)
-    motor_pair.move_tank_for_degrees(motor_pair.PAIR_1, 500, 1000, 1000)
+    await Mission01_3DCinema()
+    #motor_pair.move_tank_for_degrees(motor_pair.PAIR_1, -500, 1000, 1000)
+    #motor_pair.move_tank_for_degrees(motor_pair.PAIR_1, 500, 1000, 1000)
     #await moveForward(12)
     #await moveBackward(5)
     #await turnRight(180)
@@ -167,19 +231,11 @@ async def main():
 
 
     ##Robot initial position
-    await armUp()
-    #await armDown()
-    await tailUp()
+
     #await tailDown()
 
-    #mission_3dCinema
-    await moveForward(16)
-    await armDown()
-    await armUp()
-    await armDown()
-    await armUp()
-    await moveBackward(5)
-    await turnRight(45)
+  
+
     #await motor.run_for_degrees(port.B, 360, 720)
     #await motor.run_for_degrees(port.E, 360, 720)
     #await motor.run_for_degrees(port.B, -360, 720)
