@@ -7,7 +7,7 @@ from motor_pair import move_tank, move_tank_for_degrees, stop
 def init():
     ##Initialize motors and sensors
     motor_pair.unpair(motor_pair.PAIR_1)
-    motor_pair.pair(motor_pair.PAIR_1,port.D,port.F)
+    motor_pair.pair(motor_pair.PAIR_1,port.C,port.A)
     motion_sensor.set_yaw_face(motion_sensor.FRONT)
     motion_sensor.reset_yaw(0)
     sound.volume(100)
@@ -121,6 +121,16 @@ async def armUp():
     print ('arm up')
     await motor.run_for_degrees(port.B, 360, 720)
 
+
+async def armUpByAngle(angle):
+    '''
+    Purpose:Lift up Arm
+    degrees: 1 to 360
+    speed: 100 to 1000
+    '''
+    print ('arm up')
+    await motor.run_for_degrees(port.B, angle, 720)
+
 async def armDown():
     '''
     Purpose:Lift up Arm
@@ -129,6 +139,15 @@ async def armDown():
     '''
     print ('arm down')
     await motor.run_for_degrees(port.B, -360, 1000, acceleration=10000)
+
+async def armDownByAngle(angle):
+    '''
+    Purpose:Lift up Arm
+    degrees: 1 to 360
+    speed: 100 to 1000
+    '''
+    print ('arm down')
+    await motor.run_for_degrees(port.B, -angle, 1000, acceleration=10000)
 
 
 async def tailUp():
@@ -157,72 +176,30 @@ async def tailDown():
 '''
 MISSIONS START
 '''
-#Mission 01
-async def Mission_3DCinema():
-    await armUp()
-    await tailUp()
-    await moveForward(15)
-    await turnLeft(6)
-    await armDown()
-    await turnRight(8)
-    await armUp()
-    await turnLeft(8)
-    await armDown()
-    await turnRight(8)
-    await armUp()
 
-
-#Mission 02
-async def Mission_TheaterSceneChange():
-    await armUp()
-    await tailUp()
-
-#Mission 03
-async def mission_ImmersiveExperience():
-    await armUp()
-    await tailUp()
-
-#Mission 04
-async def mission_MasterPiece():
-    await armUp()
-    await tailUp()
-
-#Mission 05
-async def mission_5():
-    await armUp()
-    await tailUp()
-
-#Mission 06
-async def mission_6():
-    await armUp()
-    await tailUp()
-
-#Mission 07
-async def mission_7():
-    await armUp()
-    await tailUp()
-
-#Mission 08
-async def mission_8():
-    await armUp()
-    await tailUp()
 
 #Mission 09
-async def mission_9():
+async def rollingCamera2():
+    await moveForward(18)
+    await moveBackward(15)
+    await turnRight(90)
     await armUp()
-    await tailUp()
+    
 
+    
+
+    
 #Mission 10
-async def mission_SoundMixer():
+async def lights():
+    await moveForward(29)
     await armUp()
-    await tailUp()moveBackward
-    await moveBackward(3)
-    await sound.beep()
-    await turnRight(60)
-    await moveForward(14)
-    await turnLeft(40)
-    await moveForward(4)
+    await turnRight(17)
+    await moveForward(5)
+    await turnLeft(4)
+    await armDown()
+    await turnLeft(3)
     await armUp()
+
 
 '''
 MISSIONS END
@@ -231,9 +208,11 @@ MISSIONS END
 async def main():
     # write your code here
     init()
+    #await rollingCamera2()
+    await lights()
     #await turnRight(90)
-    await Mission_3DCinema()
-    await mission_SoundMixer()
+    #await Mission_3DCinema()
+    #await mission_SoundMixer()
     #motor_pair.move_tank_for_degrees(motor_pair.PAIR_1, -500, 1000, 1000)
     #motor_pair.move_tank_for_degrees(motor_pair.PAIR_1, 500, 1000, 1000)
     #await moveForward(12)
@@ -247,7 +226,7 @@ async def main():
 
     #await tailDown()
 
-  
+
 
     #await motor.run_for_degrees(port.B, 360, 720)
     #await motor.run_for_degrees(port.E, 360, 720)
