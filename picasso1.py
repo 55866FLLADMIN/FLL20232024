@@ -180,7 +180,7 @@ MISSIONS START
 
 #Mission 09
 async def rollingCamera2():
-    await moveForward(18)
+    await moveForward(19)
     await moveBackward(15)
     await turnRight(90)
     await armUp()
@@ -191,13 +191,10 @@ async def rollingCamera2():
     
 #Mission 10
 async def lights():
-    await moveForward(29)
     await armUp()
-    await turnRight(17)
-    await moveForward(5)
-    await turnLeft(4)
-    await armDown()
-    await turnLeft(3)
+    await moveForward(33)
+    await turnRight(40)
+    await armDownByAngle(180)
     await armUp()
 
 
