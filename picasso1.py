@@ -184,17 +184,19 @@ async def rollingCamera2():
     await moveBackward(15)
     await turnRight(90)
     await armUp()
-    
 
-    
 
-    
+
+
+
 #Mission 10
 async def lights():
     await armUp()
     await moveForward(33)
-    await turnRight(40)
-    await armDownByAngle(180)
+    await turnRight(25)
+    await moveForward(1)
+    await armDownByAngle(80)
+    await turnLeft(15)
     await armUp()
 
 
