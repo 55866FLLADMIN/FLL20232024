@@ -190,24 +190,36 @@ async def rollingCamera2():
 
 
 #Mission 10
-async def lights_dj_sounds():
+async def lights():
     await armUp()
     await moveForward(33)
-    await turnRight(25)
-    await moveForward(1)
-    await armDownByAngle(80)
-    await turnLeft(17)
-    await armUp()
-    await moveBackward(16)
-    await turnLeft(60)
-    await moveForward(17)
-    await turnRight(90)
-    await moveForward(11)
-    await moveBackward(10)
-    await turnLeft(20)
+    await turnRight(18)
     await moveForward(2)
-    await turnLeft(20)
-    
+    await armDownByAngle(100)
+    await turnLeft(21)
+    await armUp()
+
+    #Mission 11
+async def dj():
+    await moveBackward(14)
+    await turnLeft(50)
+    await moveForward(19)
+    await turnRight(90)
+    await moveForward(7)
+
+    #Mission 12
+async def sounds():
+    await moveBackward(8)
+    await turnLeft(25)
+    await armDown()
+    await turnRight(11)
+    await moveForward(5)
+    await armUp()
+    await turnLeft(10)
+    await moveForward(2)
+    await armDown()
+
+
     
     
 
@@ -220,7 +232,9 @@ async def main():
     # write your code here
     init()
     #await rollingCamera2()
-    await lights_dj_sounds()
+    await lights()
+    await dj()
+    await sounds()
     #await turnRight(90)
     #await Mission_3DCinema()
     #await mission_SoundMixer()
