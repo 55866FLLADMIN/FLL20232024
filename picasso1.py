@@ -180,8 +180,9 @@ MISSIONS START
 
 #Mission 09
 async def rollingCamera2():
+    await armDown()
     await moveForward(19)
-    await moveBackward(15)
+    await moveBackward(15) 
     await turnRight(90)
     await armUp()
 
@@ -219,6 +220,30 @@ async def sounds():
     await moveForward(2)
     await armDown()
 
+    #side mission
+async def comehome():
+    await turnLeft(20)
+    await moveBackward(39)
+
+    #Misson 13
+async def masterpiece():
+    await armDown()
+    await moveForward(22)
+    await turnLeft(60)
+    await moveForward(38)
+    await turnRight(20)
+    await moveBackward(7)
+    await turnLeft(45)
+    await armUp()
+    await moveBackward(20)
+    await turnRight(90)
+    await moveBackward(33)
+    
+    
+    
+
+
+
 
     
     
@@ -235,6 +260,8 @@ async def main():
     await lights()
     await dj()
     await sounds()
+    await comehome() 
+    #await masterpiece()
     #await turnRight(90)
     #await Mission_3DCinema()
     #await mission_SoundMixer()
