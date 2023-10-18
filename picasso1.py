@@ -249,6 +249,12 @@ async def masterpiece():
     await moveBackward(20)
     await turnRight(90)
     await moveBackwardFast(33)
+
+    #Mission 14
+async def printer():
+    await armUp()
+    await moveForward(20)
+    await moveBackwardFast(24)
     
     
     
@@ -268,11 +274,12 @@ async def main():
     # write your code here
     init()
     #await rollingCamera2()
-    await lights()
-    await dj()
-    await sounds()
-    await comehome() 
+    #await lights()
+    #await dj()
+    #await sounds()
+    #await comehome() 
     #await masterpiece()
+    await printer()
     #await turnRight(90)
     #await Mission_3DCinema()
     #await mission_SoundMixer()
