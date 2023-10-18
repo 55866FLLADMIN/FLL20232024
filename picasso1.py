@@ -55,6 +55,17 @@ async def moveBackward(distance):
     await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1, degrees, 700, 700)
     motor_pair.stop(motor_pair.PAIR_1)
     sound.beep()
+async def moveBackwardFast(distance):
+    '''
+    purpose: Move backward
+    distance: distance in inches
+    '''
+    await light_matrix.write("B")
+    degrees = -distance * 26
+    #await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1, 360, 500, 500)
+    await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1, degrees, 1000, 1000)
+    motor_pair.stop(motor_pair.PAIR_1)
+    sound.beep()
 
 async def turnLeft(degrees):
     '''
@@ -223,7 +234,7 @@ async def sounds():
     #side mission
 async def comehome():
     await turnLeft(20)
-    await moveBackward(39)
+    await moveBackwardFast(39)
 
     #Misson 13
 async def masterpiece():
@@ -237,7 +248,7 @@ async def masterpiece():
     await armUp()
     await moveBackward(20)
     await turnRight(90)
-    await moveBackward(33)
+    await moveBackwardFast(33)
     
     
     
