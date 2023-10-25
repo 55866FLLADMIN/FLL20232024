@@ -140,7 +140,7 @@ async def armUpByAngle(angle):
     speed: 100 to 1000
     '''
     print ('arm up')
-    await motor.run_for_degrees(port.B, angle, 720)
+    await motor.run_for_degrees(port.B, angle, 720, acceleration=10000)
 
 async def armDown():
     '''
@@ -159,6 +159,15 @@ async def armDownByAngle(angle):
     '''
     print ('arm down')
     await motor.run_for_degrees(port.B, -angle, 1000, acceleration=10000)
+
+async def armDownByAngle_slow(angle):
+    '''
+    Purpose:Lift up Arm
+    degrees: 1 to 360
+    speed: 100 to 1000
+    '''
+    print ('arm down')
+    await motor.run_for_degrees(port.B, -angle, 1000, acceleration=2050)
 
 
 async def tailUp():
@@ -205,9 +214,9 @@ async def rollingCamera2():
 async def lights():
     await armUp()
     await moveForward(33)
-    await turnRight(18)
+    await turnRight(20)
     await moveForward(2)
-    await armDownByAngle(100)
+    await armDownByAngle(90)
     await turnLeft(21)
     await armUp()
 
@@ -222,14 +231,29 @@ async def dj():
     #Mission 12
 async def sounds():
     await moveBackward(8)
-    await turnLeft(25)
-    await armDown()
-    await turnRight(11)
-    await moveForward(5)
+    await turnLeft(39)
+    await moveForward(6)
+    await armDownByAngle_slow(330)
+    await armUpByAngle(130)
+    await armDownByAngle_slow(345)
+    await armUpByAngle(130)
+    await armDownByAngle_slow(450)
     await armUp()
-    await turnLeft(10)
-    await moveForward(2)
+    await moveBackward(5)
+    await turnRight(26)
     await armDown()
+    await moveForward(4)
+    await armUpByAngle(400)
+    await turnLeft(7)
+    await moveForward(1)
+    await armDown()
+
+    #await turnRight(11)
+    #await moveForward(5)
+    #await armUp()
+    #await turnLeft(10)
+    #await moveForward(2)
+    #await armDown()
 
     #side mission
 async def comehome():
@@ -274,12 +298,12 @@ async def main():
     # write your code here
     init()
     #await rollingCamera2()
-    #await lights()
-    #await dj()
-    #await sounds()
-    #await comehome() 
+    await lights()
+    await dj()
+    await sounds()
+    await comehome() 
     #await masterpiece()
-    await printer()
+    #await printer()
     #await turnRight(90)
     #await Mission_3DCinema()
     #await mission_SoundMixer()
