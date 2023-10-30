@@ -16,11 +16,11 @@ def init():
 
 async def moveForward(distance):
     '''
-    Make the base turn at an angle by degrees provided. 
+    Make the base turn at an angle by degrees provided.
     '''
     print ('Moving Forward')
     degrees = distance * 26 * 2
-    # 26:           for amount of degrees to rotate the wheels to move by 1/2 inch with small wheel
+    # 26:        for amount of degrees to rotate the wheels to move by 1/2 inch with small wheel
     # degrees * 2: when using the small wheel, you have to double the rotations to move by 1 inch.
     # 26 for aomut of degrees to rotate the wheels to move by 1 inch with "big wheel"
     print (degrees)
@@ -84,11 +84,29 @@ async def turn90():
 async def draw_Circle(radius):
     '''
     534 wheel turn = 360 actual turn on paper
+    circumference = 2 * pi * radius
+    c = 2*3.141*1
+    c = 6.282 = 6.3
+
+    turns    angle
+    4       90
+    8       45
+    16      22.5
+    32      11.25
+    64      5.625
+    128     2.8125
+    256     1.40625
+    512     0.703125
     '''
-    print ('Drawing circle')
-    for x in range(10):
-        await moveForward(.5)
-        await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1, 53, -100, 100)
+    print ('Drawing circle2')
+    # calculate range 
+    # calculate turn angle
+    sides = math.ceil(6.3/100)
+
+    for x in range(sides):
+        #await moveForward(.1)
+        await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1, 1, 100, 100)
+        await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1, 1, -500, 500)
 
 async def draw_Square(length):
     print ('Drawing Square')
@@ -140,7 +158,7 @@ async def draw_Star(length):
     #motion_sensor.reset_yaw_angle()
     #wait_until(hub.motion_sensor.get_yaw_angle, greater_than_or_equal_to, 90)
     #motor_pair.stop()
-    
+
 async def prnt():
     print
     '''
@@ -158,23 +176,31 @@ async def main():
     motor_pair.unpair(motor_pair.PAIR_2)
     motor_pair.unpair(motor_pair.PAIR_3)
     motor_pair.pair(motor_pair.PAIR_1, port.E, port.F)
-    
+
     #await draw_FullCircle()
     #await turn90()
     #await draw_Square(3)
-    await draw_Triangle(3)
+    #await draw_Triangle(3)
     # Turn right for 180 degrees
     #motor_pair.move_tank_for_degrees(motor_pair.PAIR_1, 535, -100, 100)
 
+    #await draw_Circle(1)
+    
+    for x in range(1100):
+        #await moveForward(.1)
+        await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1, 1, 500, 500)
+        await motor_pair.move_tank_for_degrees(motor_pair.PA IR_1, 1, 500, -500)
+    
+
     '''
-    with 180 degree wheel rotation, It takes a little less than 3 rounds for 360 degree turn. 
-    Second variable Number of degrees = number degrees of wheel rotation - not turning the hub. 
+    with 180 degree wheel rotation, It takes a little less than 3 rounds for 360 degree turn.
+    Second variable Number of degrees = number degrees of wheel rotation - not turning the hub.
     '''
 
     #backward
-    await motor.run_for_degrees(port.D,500,100)
+    #await motor.run_for_degrees(port.D,500,100)
     #forward
-    await motor.run_for_degrees(port.D,-500,100)
+    #await motor.run_for_degrees(port.D,-500,100)
 
     #motor.stop(port.D)
     #await motor_pair.move_for_time(motor_pair.PAIR_1, 1000, 100,velocity=300)
@@ -187,20 +213,20 @@ async def main():
     #motion_sensor.reset_yaw(0)
     #
     #light_matrix.write("Hi!")
-    #while motion_sensor.tilt_angles()[0]<(360):   
+    #while motion_sensor.tilt_angles()[0]<(360):
     #    i=motion_sensor.tilt_angles()[0]
     #    light_matrix.write(str(i))
 
     #await moveBackward(10)
     #await moveForward(3)
 
-    
+
     # await turn90(degrees)
     # turnDegrees = degrees * 1.644 # 1.644/2 = 0.822
     # turnDegrees = math.ceil(turnDegrees) *-1
     #await motor_pair.move_tank_for_degrees(motor_pair.PAIR_2, degrees, 200, -200,stop=motor.HOLD)
-    
-    
+
+
 
     #await turnLeft(4010)
     #await draw_Circle1()
