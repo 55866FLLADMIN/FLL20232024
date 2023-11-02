@@ -44,6 +44,60 @@ async def moveForward(distance):
     #await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1, -180, 500, 500)
     sound.beep()
 
+async def moveForwardSlow(distance):
+    '''
+    purpose: Move Forward
+    distance: distance in inches
+    '''
+    if distance is None:
+        return
+
+    '''
+    inch= degree
+    14=360
+    7=180
+    1=26
+    '''
+    light_matrix.write("F")
+    degrees = distance * 26
+    #await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1, 360, 500, 500)
+    await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1, degrees, 700, 700, acceleration=500)
+    motor_pair.stop(motor_pair.PAIR_1)
+    #await motor_pair.move_for_time(motor_pair.PAIR_1,5000,0,velocity=1000,acceleration=500)
+    #motor_pair.move_tank(motor_pair.PAIR_1, 100, 100)
+
+
+    #await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1, -360, 500, 500)
+    #await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1, -180, 500, 500)
+    sound.beep()
+
+async def moveForwardByHalf(distance):
+    '''
+    purpose: Move Forward
+    distance: distance in inches
+    '''
+    if distance is None:
+        return
+
+    '''
+    inch= degree
+    14=360
+    7=180
+    1=26
+    '''
+    light_matrix.write("F")
+    degrees = distance * 13
+    #await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1, 360, 500, 500)
+    await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1, degrees, 700, 700)
+    motor_pair.stop(motor_pair.PAIR_1)
+    #await motor_pair.move_for_time(motor_pair.PAIR_1,5000,0,velocity=1000,acceleration=500)
+    #motor_pair.move_tank(motor_pair.PAIR_1, 100, 100)
+
+
+    #await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1, -360, 500, 500)
+    #await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1, -180, 500, 500)
+    sound.beep()
+
 async def moveBackward(distance):
     '''
     purpose: Move backward
@@ -53,17 +107,6 @@ async def moveBackward(distance):
     degrees = -distance * 26
     #await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1, 360, 500, 500)
     await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1, degrees, 700, 700)
-    motor_pair.stop(motor_pair.PAIR_1)
-    sound.beep()
-async def moveBackwardFast(distance):
-    '''
-    purpose: Move backward
-    distance: distance in inches
-    '''
-    await light_matrix.write("B")
-    degrees = -distance * 26
-    #await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1, 360, 500, 500)
-    await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1, degrees, 1000, 1000)
     motor_pair.stop(motor_pair.PAIR_1)
     sound.beep()
 
@@ -140,7 +183,7 @@ async def armUpByAngle(angle):
     speed: 100 to 1000
     '''
     print ('arm up')
-    await motor.run_for_degrees(port.B, angle, 720, acceleration=10000)
+    await motor.run_for_degrees(port.B, angle, 720)
 
 async def armDown():
     '''
@@ -160,15 +203,6 @@ async def armDownByAngle(angle):
     print ('arm down')
     await motor.run_for_degrees(port.B, -angle, 1000, acceleration=10000)
 
-async def armDownByAngle_slow(angle):
-    '''
-    Purpose:Lift up Arm
-    degrees: 1 to 360
-    speed: 100 to 1000
-    '''
-    print ('arm down')
-    await motor.run_for_degrees(port.B, -angle, 1000, acceleration=2050)
-
 
 async def tailUp():
     '''
@@ -179,6 +213,14 @@ async def tailUp():
     print ('tail up')
     await motor.run_for_degrees(port.E, 360, 720)
 
+async def tailUpByAngle(angle):
+    '''
+    Purpose:Lift up Arm
+    degrees: 1 to 360
+    speed: 100 to 1000
+    '''
+    print ('tail up')
+    await motor.run_for_degrees(port.E,angle, 360, 720)
 
 
 
@@ -202,7 +244,7 @@ MISSIONS START
 async def rollingCamera2():
     await armDown()
     await moveForward(19)
-    await moveBackward(15) 
+    await moveBackward(15)
     await turnRight(90)
     await armUp()
 
@@ -214,9 +256,9 @@ async def rollingCamera2():
 async def lights():
     await armUp()
     await moveForward(33)
-    await turnRight(20)
+    await turnRight(18)
     await moveForward(2)
-    await armDownByAngle(90)
+    await armDownByAngle(100)
     await turnLeft(21)
     await armUp()
 
@@ -226,84 +268,68 @@ async def dj():
     await turnLeft(50)
     await moveForward(19)
     await turnRight(90)
-    await moveForward(7)
+    await moveForward(8)
 
     #Mission 12
 async def sounds():
     await moveBackward(8)
-    await turnLeft(39)
-    await moveForward(6)
-    await armDownByAngle_slow(330)
-    await armUpByAngle(130)
-    await armDownByAngle_slow(345)
-    await armUpByAngle(130)
-    await armDownByAngle_slow(450)
-    await armUp()
-    await moveBackward(5)
-    await turnRight(26)
+    await turnLeft(19)
     await armDown()
+    #await turnRight(10)
     await moveForward(4)
-    await armUpByAngle(400)
-    await turnLeft(7)
-    await moveForward(1)
+    await moveForwardByHalf(0)
+    await armUpByAngle(135)
+    await turnLeft(10)
+    await moveForward(2)
     await armDown()
-
-    #await turnRight(11)
-    #await moveForward(5)
-    #await armUp()
-    #await turnLeft(10)
-    #await moveForward(2)
-    #await armDown()
 
     #side mission
 async def comehome():
     await turnLeft(20)
-    await moveBackwardFast(39)
+    await moveBackward(39)
 
     #Misson 13
 async def masterpiece():
     await armDown()
-    await moveForward(22)
-    await turnLeft(60)
-    await moveForward(38)
-    await turnRight(20)
-    await moveBackward(7)
+    await moveForward(25)
+    await turnLeft(69)
+    await moveForwardSlow(38)
+    await turnRight(25)
+    await moveBackward(3)
     await turnLeft(45)
+    await moveBackward(2)
     await armUp()
-    await moveBackward(20)
+    await moveForward(7)
+    await turnRight(80)
+    await tailDown()
+
+    #Misson 13
+async def lighttower():
+    await moveBackward(45)
     await turnRight(90)
-    await moveBackwardFast(33)
-
-    #Mission 14
-async def printer():
-    await armUp()
-    await moveForward(20)
-    await moveBackwardFast(24)
-    
-    
-    
-
-
-
+    await tailUp()
+    await moveBackward(8)
 
     
-    
 
 
-'''
-MISSIONS END
-'''
+
+
+    "missions ends"
+
+
+
 
 async def main():
     # write your code here
     init()
     #await rollingCamera2()
-    await lights()
-    await dj()
-    await sounds()
-    await comehome() 
+    #await lights()
+    #await dj()
+    #await sounds()
+    #await comehome()
     #await masterpiece()
-    #await printer()
+    await lighttower()
     #await turnRight(90)
     #await Mission_3DCinema()
     #await mission_SoundMixer()
