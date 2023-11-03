@@ -4,7 +4,7 @@ from motor import BRAKE, HOLD, velocity
 from motor_pair import move_tank, move_tank_for_degrees, stop
 
 #color senser
-import color_sensor
+import color_sensor, color
 
 def init():
     ##Initialize motors and sensors
@@ -16,6 +16,20 @@ def init():
     #moveSpeed = 1000
     #inch2Degree = 26
     #tail = motor
+
+async def moveForward_QuarterInchIncrements(distance):
+    '''
+    purpose: Move Forward
+    distance: distance in half inches
+    '''
+    if distance is None:
+        return
+
+    light_matrix.write("F")
+    degrees = distance * 6
+    await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1, degrees, 700, 700)
+    motor_pair.stop(motor_pair.PAIR_1)
+    sound.beep()
 
 
 async def moveForward_halfInchIncrements(distance):
@@ -211,26 +225,31 @@ async def Mission_3DCinema():
 #Mission 02
 async def Mission_TheaterSceneChange():
     await moveBackward(3)
-    await turnRight(45)
-    await moveForward(23)
-    await turnLeft(72)
-    await moveForward(2)
-    await moveForward_halfInchIncrements(1)
+    await turnRight(44)
+    await moveForward(25)
+    await turnLeft(79)
+
+    # print (color_sensor.rgbi(port.D))
+    # print (color_sensor.rgbi(port.F))
+    # print (color_sensor.reflection(port.D))
+    # print (color_sensor.reflection(port.F))
+
+    while color_sensor.color(port.D) != color.BLACK or color_sensor.color(port.F) != color.BLACK:
+        await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1, 10, 10, 10)
+    motor_pair.stop(motor_pair.PAIR_1)
+    await moveBackward_byQuarterInch(1)
     await armDown()
     await armDown()
     await runloop.sleep_ms(1000)
     await turnRight(25)
     await armUp()
     await turnLeft(25)
-    if color_sensor.reflection(port.D)== 10 :
-        await moveForward_halfInchIncrements(1)
-    if color_sensor.reflection(port.D)== 0 :
-        await moveBackward_byQuarterInch(1)
     await armDown()
     await armDown()
+    await moveBackward(1)
 
-
-
+    await runloop.sleep_ms(100000)
+    
 #Mission 03
 async def Mission_ImmersiveExperience():
     await turnRight(90)
