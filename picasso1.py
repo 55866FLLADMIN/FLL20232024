@@ -290,7 +290,7 @@ async def dj():
     await turnLeft(50)
     await moveForward(19)
     await turnRight(90)
-    await moveForwardSlow(7)
+    await moveForwardSlow(8)
  
     #Mission 12
 async def sounds():
@@ -303,16 +303,17 @@ async def sounds():
     await turnLeft(18)
     await armDown()
     #await turnRight(10)
-    await moveForward(5)
+    await moveForward(4)
     await moveForwardByHalf(1)
     await armUpFast()
+    await armDownByAngle(110)
     await turnLeft(9)
-    await moveForward(2)
+    #await moveForward(2)
     await armDown()
 
     #side mission
 async def comehome():
-    await turnLeft(25)
+    await turnLeft(30)
     await moveBackward(39)
 
     #Misson 13
@@ -350,6 +351,7 @@ async def lighttower():
 async def main():
     # write your code here
     init()
+    
     #await rollingCamera2()
     await lights()
     await dj()
