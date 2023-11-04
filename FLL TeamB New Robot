@@ -1,0 +1,27 @@
+async def moveForwardByDecDisByspeed(distance, speed):
+    '''
+    purpose: Move Forward
+    distance: distance in inches
+    '''
+    if distance is None:
+        return
+
+    '''
+    inch= degree
+    14=360
+    7=180
+    1=26
+    '''
+    light_matrix.write("F")
+    degrees = distance * (360/float(14))
+    degrees = round(degrees)
+    #await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1, 360, 500, 500)
+    await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1, degrees, 700, 700, acceleration=speed)
+    motor_pair.stop(motor_pair.PAIR_1)
+    #await motor_pair.move_for_time(motor_pair.PAIR_1,5000,0,velocity=1000,acceleration=500)
+    #motor_pair.move_tank(motor_pair.PAIR_1, 100, 100)
+
+
+    #await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1, -360, 500, 500)
+    #await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1, -180, 500, 500)
+    sound.beep()
