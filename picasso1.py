@@ -1,7 +1,9 @@
 from hub import light_matrix, motion_sensor, port, sound
 import motor,motor_pair, runloop, math
-from motor import BRAKE, HOLD
+from motor import BRAKE, HOLD, run
 from motor_pair import move_tank, move_tank_for_degrees, stop
+import color_sensor
+import color 
 
 
 def init():
@@ -61,7 +63,7 @@ async def moveForwardSlow(distance):
     light_matrix.write("F")
     degrees = distance * 26
     #await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1, 360, 500, 500)
-    await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1, degrees, 700, 700, acceleration=500)
+    await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1, degrees, 700, 700, acceleration=750)
     motor_pair.stop(motor_pair.PAIR_1)
     #await motor_pair.move_for_time(motor_pair.PAIR_1,5000,0,velocity=1000,acceleration=500)
     #motor_pair.move_tank(motor_pair.PAIR_1, 100, 100)
@@ -109,7 +111,18 @@ async def moveBackward(distance):
     await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1, degrees, 700, 700)
     motor_pair.stop(motor_pair.PAIR_1)
     sound.beep()
-
+ 
+async def moveBackward_byQuarterInch(distance):
+    '''
+    purpose: Move backward
+    distance: distance in inches
+    '''
+    await light_matrix.write("B")
+    degrees = -distance * 6
+    #await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1, 360, 500, 500)
+    await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1, degrees, 700, 700)
+    motor_pair.stop(motor_pair.PAIR_1)
+    sound.beep() 
 async def turnLeft(degrees):
     '''
     purpose: Turn robot left
@@ -174,6 +187,15 @@ async def armUp():
     '''
     print ('arm up')
     await motor.run_for_degrees(port.B, 360, 720)
+
+async def armUpFast():
+    '''
+    Purpose:Lift up Arm
+    degrees: 1 to 360
+    speed: 100 to 1000
+    '''
+    print ('arm up')
+    await motor.run_for_degrees(port.B, 360, 720, acceleration=10000)
 
 
 async def armUpByAngle(angle):
@@ -268,24 +290,29 @@ async def dj():
     await turnLeft(50)
     await moveForward(19)
     await turnRight(90)
-    await moveForward(8)
-
+    await moveForwardSlow(7)
+ 
     #Mission 12
 async def sounds():
     await moveBackward(8)
-    await turnLeft(19)
+    # while color_sensor.color(port.D) != color.BLACK or color_sensor.color(port.F) != color.BLACK:
+    #     await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1, 10, 10, 10)
+    # motor_pair.stop(motor_pair.PAIR_1)
+    #await moveBackward_byQuarterInch(1)
+    # await runloop.sleep_ms(10000)
+    await turnLeft(18)
     await armDown()
     #await turnRight(10)
-    await moveForward(4)
-    await moveForwardByHalf(0)
-    await armUpByAngle(135)
-    await turnLeft(10)
+    await moveForward(5)
+    await moveForwardByHalf(1)
+    await armUpFast()
+    await turnLeft(9)
     await moveForward(2)
     await armDown()
 
     #side mission
 async def comehome():
-    await turnLeft(20)
+    await turnLeft(25)
     await moveBackward(39)
 
     #Misson 13
@@ -324,12 +351,12 @@ async def main():
     # write your code here
     init()
     #await rollingCamera2()
-    #await lights()
-    #await dj()
-    #await sounds()
-    #await comehome()
+    await lights()
+    await dj()
+    await sounds()
+    await comehome()
     #await masterpiece()
-    await lighttower()
+    #await lighttower()
     #await turnRight(90)
     #await Mission_3DCinema()
     #await mission_SoundMixer()
