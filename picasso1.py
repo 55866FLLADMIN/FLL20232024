@@ -253,7 +253,7 @@ async def tailDown():
     speed: 100 to 1000
     '''
     print ('tail up')
-    await motor.run_for_degrees(port.E, 600, 600)
+    await motor.run_for_degrees(port.E, 690, 690)
 
 async def tailUpByAngle(angle):
     '''
@@ -364,8 +364,10 @@ async def lighttower():
     await turnRight(90)
 
     #await moveForwardByDecDisByspeed(0.5,500)
+    await moveForward(2)
+    await tailUp()
     await tailDown()
-    await moveBackward(5)
+    await moveBackward(8)
     i=0
     while i<5:
         await motor.run_for_degrees(port.E, -1000, 1000, acceleration=100000)
