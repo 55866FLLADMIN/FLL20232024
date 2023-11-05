@@ -1,0 +1,27 @@
+def sensed_color():
+    return color_sensor.color(port.D) == color.BLACK or color_sensor.color(port.F) == color.BLACK
+
+async def line_square():
+    motor_pair.move(motor_pair.PAIR_1, 0, velocity =10)
+    await runloop.until(sensed_color)
+    if color_sensor.color(port.D) == color.BLACK:
+        # motor_pair.move_tank(motor_pair.PAIR_1, -50, speed)
+        while color_sensor.color(port.F) != color.BLACK:
+            await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1, 10, -5, 5)
+        motor_pair.stop(motor_pair.PAIR_1)
+    else:
+        while color_sensor.color(port.D) != color.BLACK:
+            await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1, 10, 7, -3)
+        motor_pair.stop(motor_pair.PAIR_1)
+
+
+
+
+
+async def main():
+    init()
+    await line_square()
+
+
+
+runloop.run(main())
