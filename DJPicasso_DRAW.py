@@ -4,6 +4,7 @@ import motor
 import runloop
 import math
 from hub import motion_sensor
+import distance_sensor
 
 def init():
     motor_pair.unpair(motor_pair.PAIR_2)
@@ -96,7 +97,7 @@ async def turn90():
 async def draw_Circle(radius):
     print ('Drawing circle')
     light_matrix.IMAGE_PACMAN
-    for x in range(900):
+    for x in range(960):
         await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1, 1, 1000, 1000)
         await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1,1,1000,-1000)
 
@@ -109,17 +110,17 @@ async def draw_Circle(radius):
     c = 6.282 = 6.3
 
     turns    angle
-    4       90
-    8       45
-    16      22.5
-    32      11.25
-    64      5.625
-    128     2.8125
-    256     1.40625
-    512     0.703125
+    4    90
+    8    45
+    16    22.5
+    32    11.25
+    64    5.625
+    128    2.8125
+    256    1.40625
+    512    0.703125
     ''
     print ('Drawing circle2')
-    # calculate range 
+    # calculate range
     # calculate turn angle
     sides = math.ceil(6.3/100)
 
@@ -175,45 +176,65 @@ async def draw_Diamond(length):
 async def draw_Heart(length):
     light_matrix.show_image(light_matrix.IMAGE_HEART)
     await moveForward_byQuarter(5)
-    await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1, 134+14, -100, 100)
-    await moveForward(1)
-    await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1, math.ceil(45*8), -1000, 500)
+    await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1, 147, -100, 100)
+    await moveForward_byQuarter(5)
+    await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1, math.ceil(45*8), -100, 50)
     await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1,134,500,-500)
-    await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1, math.ceil(45*8), -1000, 500)
+    await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1, math.ceil(45*8), -100, 50)
     #await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1, 180*1, -1000, 500)
 
 
 async def draw_Star(length):
     print ('Drawing Star *')
-
-
-
-
-
-
     '''
-    #mp = motor_pair.pair(motor_pair.PAIR_2,port.E,port.F)
-    motion_sensor.reset_yaw(0)
-    #await runloop.sleep_ms(2000)
-    #motor_pair.move(motor_pair.PAIR_2,100,velocity=1000)
-    while motion_sensor.tilt_angles()[0]<(degrees): #getting yaw value from tiltAngle function
-        motor_pair.move_tank(motor_pair.PAIR_2,100,-100) # -100 is steering value Left = -100 to right = 100
-    motor_pair.stop(motor_pair.PAIR_2)
-
-    #await runloop.until( motion_sensor.tilt_angles()[0] = (90))
-
-    #wait_until(motion_sensor.get_yaw_angle, greater_than_or_equal_to, 90)
-
-    #Motor_Pair('A', 'E')
-    #mp.set_stop_action('brake')
-    #mp.start_tank(20, 0)
-    #motion_sensor.reset_yaw_angle()
-    #wait_until(hub.motion_sensor.get_yaw_angle, greater_than_or_equal_to, 90)
-    #motor_pair.stop()
-
-async def prnt():
-    print
+    7 inches = one full wheel rotation. 
+    36 internal turn
+    108 external turn
     '''
+    for i in range(5):
+        await moveForward(1)
+        await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1,106,-100,100) # 72 degree turn
+        await moveForward(1)
+        await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1,213,100,-100) # = 144
+        #await moveForward(1)
+        
+
+async def draw_Hexagon(length):
+    for i in range(6):
+        await moveForward(length)
+        await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1,88,100,-100) # = 180
+        
+
+async def draw_Pentagon(length):
+    for i in range(5):
+        await moveForward(length)
+        await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1,106,100,-100) # = 180
+
+
+
+        '''
+        #mp = motor_pair.pair(motor_pair.PAIR_2,port.E,port.F)
+        motion_sensor.reset_yaw(0)
+        #await runloop.sleep_ms(2000)
+        #motor_pair.move(motor_pair.PAIR_2,100,velocity=1000)
+        while motion_sensor.tilt_angles()[0]<(degrees): #getting yaw value from tiltAngle function
+            motor_pair.move_tank(motor_pair.PAIR_2,100,-100) # -100 is steering value Left = -100 to right = 100
+        motor_pair.stop(motor_pair.PAIR_2)
+
+        #await runloop.until( motion_sensor.tilt_angles()[0] = (90))
+
+        #wait_until(motion_sensor.get_yaw_angle, greater_than_or_equal_to, 90)
+
+        #Motor_Pair('A', 'E')
+        #mp.set_stop_action('brake')
+        #mp.start_tank(20, 0)
+        #motion_sensor.reset_yaw_angle()
+        #wait_until(hub.motion_sensor.get_yaw_angle, greater_than_or_equal_to, 90)
+        #motor_pair.stop()
+
+        async def prnt():
+            print
+        '''
 
 
 async def main():
@@ -225,21 +246,41 @@ async def main():
     sound.volume(100)
     sound.beep()
 
+
+    # while distance_sensor.distance(port.A) <= 3:
+    #     motor_pair.stop(motor_pair.PAIR_1)
+
+    
+
     motor_pair.unpair(motor_pair.PAIR_1)
     motor_pair.unpair(motor_pair.PAIR_2)
     motor_pair.unpair(motor_pair.PAIR_3)
     motor_pair.pair(motor_pair.PAIR_1, port.E, port.F)
 
-    await draw_Heart(1)
+
+    #await draw_Pentagon(1)
     #await draw_Rectangle(1)
     #await draw_Diamond(2)
-    #await draw_Square(3)
-    #await draw_Triangle(3)
+    #await draw_Square(1)
+    #await draw_Triangle(2)
+    await draw_Circle(1)
+    #await draw_Heart(1)
+
+    #await draw_Hexagon(1)
+    #await draw_Star(1)
+    '''
+    36 = 90
+    108 = 161
+    252 = 375
+    324 = 482
+    360 = 528
+    '''
+    #await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1,532,-100,100) # 108 degree turn
+
     # Turn right for 180 degrees
     #motor_pair.move_tank_for_degrees(motor_pair.PAIR_1, 535, -100, 100)
 
-    #await draw_Circle(1)
-    
+
     # SMALL CIRCLE
 
 
@@ -249,7 +290,7 @@ async def main():
     #await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1, 30,1000,1000)
     await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1, 360*3, 1000, -900)
     #await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1, 30,1000,1000)
-    
+
     await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1, 360*2, 1000, -800)
     #await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1, 30,1000,1000)
     await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1, 360*2, 1000, -700)
@@ -267,8 +308,8 @@ async def main():
     await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1, 360*4, 1000, -200)
     await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1, 30,1000,1000)
     '''
-   # await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1, 360*3, 500, -100)
-    
+# await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1, 360*3, 500, -100)
+
 
 
     '''
