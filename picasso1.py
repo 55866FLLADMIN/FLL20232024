@@ -1,6 +1,6 @@
 from hub import light_matrix, motion_sensor, port, sound
 import motor,motor_pair, runloop, math
-from motor import BRAKE, HOLD, run
+from motor import BRAKE, HOLD, run, velocity
 from motor_pair import move_tank, move_tank_for_degrees, stop
 import color_sensor
 import color 
@@ -179,6 +179,26 @@ async def turnRight(degrees):
     #RIGHT
     #motor_pair.move_tank_for_degrees(motor_pair.PAIR_1, -148, -200, 200)
 
+async def turnRightSlow(degrees):
+    '''
+    purpose: turn robot right
+    degrees: 1 to 360 in increments of 1
+    '''
+    if degrees is None:
+        return
+
+    '''
+    180 = 296
+    90= 148
+    45= 74
+    '''
+    await light_matrix.write("R")
+    turnDegrees = degrees * 1.6444
+    print (turnDegrees)
+    turnDegrees = math.ceil(turnDegrees) *-1
+    print (turnDegrees)
+    await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1, turnDegrees, -200, 200, acceleration=50)
+
 async def armUp():
     '''
     Purpose:Lift up Arm
@@ -226,14 +246,14 @@ async def armDownByAngle(angle):
     await motor.run_for_degrees(port.B, -angle, 1000, acceleration=10000)
 
 
-async def tailUp():
+async def tailDown():
     '''
     Purpose:Lift up Arm
     degrees: 1 to 360
     speed: 100 to 1000
     '''
     print ('tail up')
-    await motor.run_for_degrees(port.E, 360, 720)
+    await motor.run_for_degrees(port.E, 600, 600)
 
 async def tailUpByAngle(angle):
     '''
@@ -246,7 +266,7 @@ async def tailUpByAngle(angle):
 
 
 
-async def tailDown():
+async def tailUp():
     '''
     Purpose:Lift up Arm
     degrees: 1 to 360
@@ -255,6 +275,51 @@ async def tailDown():
     print ('tail Down')
     await motor.run_for_degrees(port.E, -360, 720)
 
+async def moveForwardByDecDisByspeed(distance, speed):
+    '''
+    purpose: Move Forward
+    distance: distance in inches
+    '''
+    if distance is None:
+        return
+
+    '''
+    inch= degree
+    14=360
+    7=180
+    1=26
+    '''
+    light_matrix.write("F")
+    degrees = distance * (360/float(14))
+    degrees = round(degrees)
+    #await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1, 360, 500, 500)
+    await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1, degrees, speed, speed)
+    motor_pair.stop(motor_pair.PAIR_1)
+    #await motor_pair.move_for_time(motor_pair.PAIR_1,5000,0,velocity=1000,acceleration=500)
+    #motor_pair.move_tank(motor_pair.PAIR_1, 100, 100)
+
+
+    #await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1, -360, 500, 500)
+    #await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1, -180, 500, 500)
+    sound.beep()
+
+def sensed_color():
+    return color_sensor.color(port.D) == color.BLACK or color_sensor.color(port.F) == color.BLACK
+
+async def line_square():
+    motor_pair.move(motor_pair.PAIR_1, 0, velocity =10)
+    await runloop.until(sensed_color)
+    if color_sensor.color(port.D) == color.BLACK:
+        # motor_pair.move_tank(motor_pair.PAIR_1, -50, speed)
+        while color_sensor.color(port.F) != color.BLACK:
+            await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1, 10, -7, 7)
+        motor_pair.stop(motor_pair.PAIR_1)
+    else:
+        while color_sensor.color(port.D) != color.BLACK:
+            await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1, 10, 7, -7)
+        motor_pair.stop(motor_pair.PAIR_1)
+
+
 
 
 '''
@@ -262,7 +327,59 @@ MISSIONS START
 '''
 
 
-#Mission 09
+#mission 8
+async def bananaboat():
+    await armDown()
+    await armUpByAngle(160)
+    # await moveForward(2)
+    # await turnRight(90)
+    # await moveForwardByDecDisByspeed(4,280)
+    # await turnLeft(90)
+    await moveForwardByDecDisByspeed(58.75,750)
+    await turnLeft(84)
+    #await moveBackward(1)
+    # await moveForwardByDecDisByspeed(0.5,280)
+    #await moveForwardByHalf(1)
+    await armDown()
+    await armDown()
+    await turnRightSlow(45)
+    await moveBackward(5)
+    await armUp()
+    await turnLeft(45)
+    await moveForward(6)
+    await armDown()
+    #runloop.sleep_ms(30000)
+    await moveBackward(3)
+    await armUp()
+    await turnLeft(90)
+    await armUp()
+
+
+
+
+    #Mission 9
+async def lighttower():
+    await line_square()
+    await moveForward(5)
+    await turnRight(90)
+
+    #await moveForwardByDecDisByspeed(0.5,500)
+    await tailDown()
+    await moveBackward(5)
+    i=0
+    while i<5:
+        await motor.run_for_degrees(port.E, -1000, 1000, acceleration=100000)
+        runloop.sleep_ms(400)
+        i=i+1
+    await tailDown()
+    await moveForward(5)
+    await turnLeft(80)
+    await moveForward(50)
+
+
+
+    
+    #Mission 10
 async def rollingCamera2():
     await armDown()
     await moveForward(19)
@@ -274,7 +391,7 @@ async def rollingCamera2():
 
 
 
-#Mission 10
+#Mission 11
 async def lights():
     await armUp()
     await moveForward(33)
@@ -284,7 +401,7 @@ async def lights():
     await turnLeft(21)
     await armUp()
 
-    #Mission 11
+    #Mission 12
 async def dj():
     await moveBackward(14)
     await turnLeft(50)
@@ -292,7 +409,7 @@ async def dj():
     await turnRight(90)
     await moveForwardSlow(8)
  
-    #Mission 12
+    #Mission 13
 async def sounds():
     await moveBackward(8)
     # while color_sensor.color(port.D) != color.BLACK or color_sensor.color(port.F) != color.BLACK:
@@ -316,7 +433,7 @@ async def comehome():
     await turnLeft(30)
     await moveBackward(39)
 
-    #Misson 13
+    #Misson 15
 async def masterpiece():
     await armDown()
     await moveForward(25)
@@ -331,12 +448,7 @@ async def masterpiece():
     await turnRight(80)
     await tailDown()
 
-    #Misson 13
-async def lighttower():
-    await moveBackward(45)
-    await turnRight(90)
-    await tailUp()
-    await moveBackward(8)
+    
 
     
 
@@ -351,14 +463,14 @@ async def lighttower():
 async def main():
     # write your code here
     init()
-    
+    await bananaboat()
+    await lighttower()
     #await rollingCamera2()
-    await lights()
-    await dj()
-    await sounds()
-    await comehome()
+    #await lights()
+    #await dj()
+    #await sounds()
+    #await comehome()
     #await masterpiece()
-    #await lighttower()
     #await turnRight(90)
     #await Mission_3DCinema()
     #await mission_SoundMixer()
