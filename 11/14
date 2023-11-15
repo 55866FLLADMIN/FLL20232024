@@ -255,7 +255,7 @@ async def Mission_TheaterSceneChange():
     # print (color_sensor.reflection(port.F))
 
     while color_sensor.color(port.D) != color.BLACK or color_sensor.color(port.F) != color.BLACK:
-        await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1, 10, 100, 100)
+        await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1, 10, 10, 10)
     motor_pair.stop(motor_pair.PAIR_1)
     await moveBackward_byQuarterInch(6)
     await armDown()
