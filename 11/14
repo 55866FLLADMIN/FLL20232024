@@ -82,6 +82,16 @@ async def moveForward(distance):
     #await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1, -180, 500, 500)
     sound.beep()
 
+
+async def moveForward_fast(distance):
+
+    light_matrix.write("F")
+    degrees = distance * 26
+    await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1, degrees, 1000, 1000)
+    motor_pair.stop(motor_pair.PAIR_1)
+    sound.beep()
+
+
 async def moveBackward(distance):
     '''
     purpose: Move backward
@@ -245,7 +255,7 @@ async def Mission_TheaterSceneChange():
     # print (color_sensor.reflection(port.F))
 
     while color_sensor.color(port.D) != color.BLACK or color_sensor.color(port.F) != color.BLACK:
-        await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1, 10, 10, 10)
+        await motor_pair.move_tank_for_degrees(motor_pair.PAIR_1, 10, 100, 100)
     motor_pair.stop(motor_pair.PAIR_1)
     await moveBackward_byQuarterInch(6)
     await armDown()
@@ -259,7 +269,7 @@ async def Mission_TheaterSceneChange():
     await armDown()
     await armDown()
     await moveBackward(1)
-    
+
 
 
 #Mission 03
@@ -289,16 +299,16 @@ async def Mission_AugmentedReality():
     await moveForward(25)
     await turnRight(5)
     await armUp()
+    await runloop.sleep_ms(100)
     await turnLeft(44)
-    await moveForward_halfInchIncrements(7)
+    await moveForward_halfInchIncrements(6)
     await armDown()
-    #await runloop.sleep_ms(1000)
     await armDown()
 # await runloop.sleep_ms(50000)
     await turnRight(40)
     await armDown()
-    await turnRight(5)
-    await moveForward(3)
+    #await turnRight(5)
+    await moveForward(4)
     await armDown()
     await turnLeft(30)
 
@@ -319,8 +329,11 @@ async def Mission_Chicken():
     await armUp()
 
 #Mission 08
-async def Go_Home():
-    print("1")
+async def Go_Home_from_AR():
+    await turnRight(35)
+    await moveForward_fast(25)
+    await turnRight(65)
+    await moveForward_fast(30)
 
 #Mission 09
 async def mission_9():
@@ -343,7 +356,7 @@ async def main():
     await Mission_TheaterSceneChange()
     await Mission_ImmersiveExperience()
     await Mission_AugmentedReality()
-    await Go_Home() 
+    await Go_Home_from_AR()
     #await Mission_LightShow()
     #await Mission_Chicken()
     #motor_pair.move_tank_for_degrees(motor_pair.PAIR_1, -500, 1000, 1000)
